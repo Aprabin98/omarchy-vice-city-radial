@@ -230,14 +230,8 @@ also left alone.
 
 ## Development
 
-The plugin entry is `Overlay.qml`; `shell.qml` is a standalone Quickshell
-entry point for previewing the wheel without the plugin host:
-
-```bash
-qs --path . --no-duplicate --verbose
-```
-
-Check the menu parser against the installed Omarchy menu:
+The plugin entry is `Overlay.qml`; the wheel lives in `Radial.qml` and ring
+items in `Slot.qml`. Check the menu parser against the installed Omarchy menu:
 
 ```bash
 OMARCHY_PATH="${OMARCHY_PATH:-/usr/share/omarchy}" node tests/menu.test.js
@@ -246,29 +240,6 @@ OMARCHY_PATH="${OMARCHY_PATH:-/usr/share/omarchy}" node tests/menu.test.js
 Changes under `~/.config/omarchy/plugins/` hot-reload, but Qt's component
 cache can keep the old compiled QML. Run `omarchy restart shell` after editing
 the plugin.
-
-## Standalone launcher (optional)
-
-The repository also carries the original standalone entry point for
-development, or for using the wheel on a Quickshell setup without the Omarchy
-plugin host. Normal Omarchy users should use the plugin install above.
-
-```bash
-git clone https://github.com/Aprabin98/omarchy-vice-city-radial.git \
-  "$HOME/.local/share/omarchy-launcher"
-cd "$HOME/.local/share/omarchy-launcher"
-./install.sh            # adds the Alt + Space binding and ~/.local/bin/omarchy-launcher
-hyprctl reload
-```
-
-In this mode `qs --path .` is the process that draws the wheel. The installer
-backs up `bindings.lua` before its first change, refuses to replace a file or a
-symlink owned by another launcher, stops on an Alt + Space conflict, and keeps
-your existing `~/.config/omarchy-launcher/config.json`. Remove it with
-`./uninstall.sh`; the checkout and your preferences are kept.
-
-`omarchy-launcher` uses the plugin when it is installed and enabled, and falls
-back to this standalone mode otherwise.
 
 ## License
 
