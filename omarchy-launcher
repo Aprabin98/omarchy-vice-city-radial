@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(CDPATH= cd -- "$(dirname -- "$(readlink -f -- "$0")")" && pwd)"
+QS="${QUICKSHELL_BIN:-qs}"
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+PLUGIN_ID="aprabin98.vice-city-radial"
+mkdir -p "$CONFIG_HOME/omarchy-launcher"
+
+# When the Omarchy shell plugin is installed and enabled, use the running shell
+# instead of starting a second Quickshell process.
+if command -v omarchy >/dev/null 2>&1 && command -v omarchy-shell >/dev/null 2>&1 \
+  && omarchy plugin list --json 2>/dev/null \
+     | jq -e --arg id "$PLUGIN_ID" 'any(.[]; .id == $id and .enabled == true)' >/dev/null 2>&1; then
+  if omarchy-shell shell toggle "$PLUGIN_ID" >/dev/null 2>&1; then
+    exit 0
+  fi
+fi
+
+if ! command -v "$QS" >/dev/null 2>&1; then
+  printf 'Omarchy Launcher: Quickshell command not found: %s\n' "$QS" >&2
+  exit 127
+fi
+
+if "$QS" --path "$ROOT" ipc call omarchy-launcher toggle >/dev/null 2>&1; then
+  exit 0
+fi
+
+# Keep one small hidden Quickshell instance so the shortcut opens instantly and
+# a second press can toggle it away without creating another overlay.
+"$QS" --path "$ROOT" --no-duplicate --daemonize
+for _ in $(seq 1 60); do
+  if "$QS" --path "$ROOT" ipc call omarchy-launcher toggle >/dev/null 2>&1; then
+    exit 0
+  fi
+  sleep 0.025
+done
+printf 'Omarchy Launcher: Quickshell did not become ready. Run "%s" --path "%s" --verbose to inspect errors.\n' "$QS" "$ROOT" >&2
+exit 1

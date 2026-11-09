@@ -1,0 +1,15 @@
+{
+  "radius": 238,
+  "iconSize": 44,
+  "animationMs": 110,
+  "mouseNavigation": true,
+  "keyboardNavigation": true,
+  "colors": {
+    "pink": "#b784ff",
+    "purple": "#7548bd",
+    "text": "#f5efff",
+    "backgroundAlpha": 0.5
+  },
+  "pageSize": 12,
+  "iconFont": "JetBrainsMono Nerd Font"
+}

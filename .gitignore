@@ -1,0 +1,5 @@
+.qmlls.ini
+*.qmlc
+*.qslog
+__pycache__/
+.DS_Store

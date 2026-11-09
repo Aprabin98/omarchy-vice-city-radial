@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "aprabin98.vice-city-radial",
+  "name": "Vice City Radial Launcher",
+  "version": "1.0.0",
+  "author": "Prabin Acharya",
+  "description": "A Vice City-style radial launcher for Omarchy: menu categories, apps, open windows and live search in one keyboard- and mouse-driven wheel.",
+  "kinds": [
+    "overlay"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "overlay": "Overlay.qml"
+  }
+}
